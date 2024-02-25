@@ -7,7 +7,7 @@ To use the app, type in the terminal the command: python manage.py runserver
 
 ## Usage
 
--The project gets the weather request from this api : https://www.weatherapi.com/
--The requests are initialized in weather_app/views.py
--In templates/weather_app/index.html you can see how the website interface has been done.
+1. The project gets the weather request from this api : https://www.weatherapi.com/
+2. The requests are initialized in weather_app/views.py
+3. In templates/weather_app/index.html you can see how the website interface has been done.
 
