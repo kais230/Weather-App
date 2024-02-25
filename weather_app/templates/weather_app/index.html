@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<style>
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #5f9fde;
+        margin: 0;
+        padding: 0;
+}
+
+.container {
+    max-width: 800px; /* Increase the max-width for a better layout */
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.search-form {
+    display: flex;
+    justify-content: center; /* Center the form horizontally */
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 15px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.error-message {
+    color: #dc3545;
+    margin-bottom: 20px;
+    text-align: center; /* Center the error message */
+}
+
+.comparison-container {
+    display: flex; /* Display the weather data and forecast side by side */
+    justify-content: space-between; /* Add space between the elements */
+}
+
+/*.city-container {*/
+/*    flex: 1; !* Allow the city-container to take the available space *!*/
+/*    padding: 20px;*/
+/*    background-color: #f8f9fa;*/
+/*    border-radius: 8px;*/
+/*    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);*/
+/*    margin-top: 20px;*/
+/*}*/
+
+.forecast-container {
+    flex: 1; /* Allow the forecast-container to take the available space */
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+/* Add styles for forecast items */
+.forecast {
+    margin-bottom: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Center text in forecast items */
+.forecast h3, .forecast p {
+    text-align: center;
+}
+
+/* Add some margin between forecast items */
+.forecast + .forecast {
+    margin-top: 10px;
+}
+
+.weather-container {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin-right: 20px; /* Add margin to separate the weather and forecast sections */
+    text-align: center;
+}
+
+/* Add some spacing between the weather and forecast containers */
+.weather-container + .forecast-container {
+    margin-left: 20px;
+}
+.weather-container img,
+.forecast img {
+    display: block; /* Make the image a block element */
+    margin: 0 auto; /* Center the image horizontally */
+}
+
+</style>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+
+<div class="container">
+    <form method="post" class="search-form">
+        {% csrf_token %}
+        <input type="text" name="city" placeholder="Enter city name">
+        <button type="submit">Submit</button>
+    </form>
+
+    {% if error_message %}
+        <p class="error-message">{{ error_message }}</p>
+    {% endif %}
+
+   <div class="comparison-container">
+    {% if weather_data1 %}
+        <div class="weather-container">
+            <h1>{{ weather_data1.city }}</h1>
+            <p>{{ weather_data1.country }}</p>
+            <h2>{{ weather_data1.temperature }}°C</h2>
+            <p>Feels like: {{ weather_data1.feels_like_temperature }}°C</p>
+            <h3>{{ weather_data1.date }}</h3>
+            <img src="{{ weather_data1.icon }}" alt="{{ weather_data1.description }}">
+            <p>{{ weather_data1.description }}</p>
+            <p>{{ weather_data1.min_temp }}°C - {{ weather_data1.max_temp }}°C</p>
+            <p>Chance of rain: {{ weather_data1.chance_of_rain }}%</p>
+            <p>Wind: {{ weather_data1.wind }}km/h</p>
+            <p>The sun will rise at: {{ weather_data1.sunrise }}</p>
+            <p>The sun will set at: {{ weather_data1.sunset }}</p>
+
+
+        </div>
+    {% endif %}
+
+    {% if forecast_data1 %}
+        <div class="forecast-container">
+            <h2>3-Day Forecast</h2>
+            {% for forecast in forecast_data1 %}
+                <div class="forecast">
+                    <h3>{{ forecast.date }}</h3>
+                    <img src="{{ forecast.icon }}" alt="{{ forecast.description }}">
+                    <p>{{ forecast.description }}</p>
+                    <p>{{ forecast.min_temp }}°C - {{ forecast.max_temp }}°C</p>
+                    <p>Chance of rain: {{ forecast.chance_of_rain }}%</p>
+                    <p>The sun will rise at: {{ forecast.sunrise }}</p>
+                    <p>The sun will set at: {{ forecast.sunset }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+</div>
+
+</body>
+
+
+</html>
